@@ -1,9 +1,14 @@
 /* Configuração geral do corpo da página */
 body {
     font-family: 'Arial', sans-serif; /* Fonte clara e legível */
-    background-color: #f4f4f4; /* Cor de fundo suave */
+    background-color: #dbdbdb; /* Cor de fundo suave */
     margin: 20px;
     color: #333; /* Cor de texto que oferece bom contraste */
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
 }
 
 .menu {
@@ -16,6 +21,27 @@ body {
     margin-right: 10px;
 }
 
+.box {
+    margin-top: 25vh;
+}
+
+.sub-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sub-text {
+    color: #5f5f5f;
+    min-width: 35vh;
+    font-size: small;
+}
+
+.link-inline {
+    color: #007bff;
+    text-decoration: underline;
+}
+
 .menu a {
     text-decoration: none;
     color: #007bff;
@@ -26,10 +52,14 @@ body {
     text-decoration: underline;
 }
 
+#cadastroForm {
+    display: none;
+}
+
 /* Cabeçalhos principais */
 h1 {
     font-size: 24px;
-    color: #0056b3; /* Cor que destaca a importância do cabeçalho */
+    color: #007bff; /* Cor que destaca a importância do cabeçalho */
 }
 
 /* Formulários */
@@ -53,8 +83,8 @@ input[type="text"],
 input[type="email"],
 input[type="tel"],
 input[type="file"],
+input[type="password"],
 select {
-    width: 100%; /* Aproveitamento máximo do espaço disponível */
     padding: 10px; /* Padding para facilidade de entrada de dados */
     margin-bottom: 20px; /* Espaço entre campos para evitar erros */
     border: 1px solid #ccc; /* Borda sutil para definir áreas clicáveis */
