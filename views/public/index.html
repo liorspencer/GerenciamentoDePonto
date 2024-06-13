@@ -30,11 +30,20 @@
                 <button type="submit">Cadastrar</button>
                 <p class="sub-text">Já possui uma conta? <a class="link-inline" onclick="mudarLogin()">Entrar</a></p>
             </form>
+            <div id="localErro">
+                <h2 class="error">ERRO!</h2>
+                <p class="error">Localização não encontrada!</p>
+                <p id="erroDescricao" class="error">Conceda permissão de localização para poder utilizar a aplicação.</p>
+                <a id="erroBotao" class="error" onclick="checarLocal()">Concedi a localização</a>
+            </div>
+            <div id="aplicacao">
+                <h1>Aplicação liberada!</h1>
+            </div>
         </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="app.js"></script>
     <script src="login.js"></script>
 </body>

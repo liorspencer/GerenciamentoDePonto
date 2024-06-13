@@ -2,7 +2,7 @@
 body {
     font-family: 'Arial', sans-serif; /* Fonte clara e legível */
     background-color: #dbdbdb; /* Cor de fundo suave */
-    margin: 20px;
+    margin: 0;
     color: #333; /* Cor de texto que oferece bom contraste */
 }
 
@@ -50,6 +50,38 @@ body {
 
 .menu a:hover {
     text-decoration: underline;
+}
+
+#localErro h2 {
+    font-size: larger;
+    color: black;
+}
+
+#localErro p {
+    font-size: medium;
+    color: rgb(43, 43, 43);
+}
+
+#localErro a {
+    background-color: #ff543e;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer; /* Indicador visual de que é clicável */
+    transition: background-color 0.3s; /* Transição suave para feedback visual */
+}
+
+#localErro a:hover {
+    background-color: #c0402f;
+}
+
+#localErro {
+    display: none;
+}
+
+#aplicacao {
+    display: none;
 }
 
 #cadastroForm {
