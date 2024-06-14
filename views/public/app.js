@@ -13,6 +13,7 @@ firebase.initializeApp(firebaseConfig); // Inicialize o Firebase
 
 const database = firebase.database(); // Inicialize o banco de dados
 const storage = firebase.storage(); // Inicialize o storage
+const loginBotao = document.getElementById('checarLogin');
 
 // Função para enviar dados para o Firebase
 function enviarDadosParaFirebase() {
@@ -79,3 +80,9 @@ function consultarAlunoPorNome() {
         console.error('Erro ao buscar alunos: ', error);
     });
 }
+
+function consultarLogin() {
+    console.log(getCookie(''))
+}
+
+loginBotao.onclick = consultarLogin();

@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <div class="box">
+    <div id="loginFrame" class="box">
         <div class="sub-box">
             <form class="form" id="loginForm">
                 <h1>Login</h1>
@@ -17,9 +17,9 @@
                 <input type="email" id="emailLogin" required><br>
                 <label for="passwordLogin">Senha:</label>
                 <input type="password" id="passwordLogin" required><br>
-                <button type="submit">Entrar</button>
+                <button id="checarLogin" type="submit">Entrar</button>
                 <p class="sub-text">Não tem uma conta? <a class="link-inline" onclick="mudarCadastro()">Crie uma
-                    agora!</a></p>
+                        agora!</a></p>
             </form>
             <form class="form" id="cadastroForm">
                 <h1>Cadastro</h1>
@@ -30,14 +30,35 @@
                 <button type="submit">Cadastrar</button>
                 <p class="sub-text">Já possui uma conta? <a class="link-inline" onclick="mudarLogin()">Entrar</a></p>
             </form>
+        </div>
+
+    </div>
+    <!-- Aplicação principal -->
+    <div id="mainFrame" class="box">
+        <h2>Ponto WEB</h2>
+        <div class="flexbox">
+            <div class="menu-colapsavel">Marcar ponto</div>
+            <div class="menu-colapsavel">Visualizar marcações</div>
+        </div>
+    </div>
+    <!-- The Modal -->
+    <div id="modalErro" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="fecharModal">&times;</span>
+            <p id="modalTexto"></p>
+        </div>
+
+    </div>
+    <div class="box">
+        <div class="sub-box">
             <div id="localErro">
                 <h2 class="error">ERRO!</h2>
                 <p class="error">Localização não encontrada!</p>
-                <p id="erroDescricao" class="error">Conceda permissão de localização para poder utilizar a aplicação.</p>
+                <p id="erroDescricao" class="error">Conceda permissão de localização para poder utilizar a aplicação.
+                </p>
                 <a id="erroBotao" class="error" onclick="checarLocal()">Concedi a localização</a>
-            </div>
-            <div id="aplicacao">
-                <h1>Aplicação liberada!</h1>
             </div>
         </div>
     </div>

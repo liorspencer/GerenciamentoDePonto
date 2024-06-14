@@ -1,9 +1,12 @@
 const login = document.getElementById('loginForm');
 const cadastro = document.getElementById('cadastroForm');
-const aplicacao = document.getElementById('aplicacao');
+const aplicacao = document.getElementById('mainFrame');
 const localizarErro = document.getElementById('localErro');
+const loginFrame = document.getElementById('loginFrame');
+const modal = document.getElementById('modalErro');
+const modalTexto = document.getElementById('modalTexto')
+const fecharModal = document.getElementsByClassName("fecharModal")[0];
 let user = Object;
-
 
 //função para definir cookies.
 function setCookie(cname, cvalue) {
@@ -25,6 +28,7 @@ function getCookie(cname) {
     }
     return "";
 }
+
 
 //função utilizada para receber a geolocalização;
 function localizarUsuario() {
@@ -48,7 +52,50 @@ function checarLocal() {
         localErro();
         
     } else {
-        mudarLogin();
+        if(getCookie('uid')!=''){
+            mudarLogin();
+            liberarEntrada();
+        }else{
+            mudarLogin();
+        }
+        
+    }
+}
+
+//função para mudar para a tela de cadastro
+function mudarCadastro() {
+    login.style.display = "none";
+    cadastro.style.display = "flex";
+}
+
+//função para mudar para a tela de login
+function mudarLogin() {
+    login.style.display = "flex";
+    cadastro.style.display = "none";
+    localizarErro.style.display = "none";
+}
+
+//função para liberar a entrada
+function liberarEntrada() {
+    aplicacao.style.display = "block";
+    loginFrame.style.display = "none";
+}
+
+//função para bloquear a aplicação caso a localização não esteja habilitada.
+function localErro() {
+    login.style.display = "none";
+    cadastro.style.display = "none";
+    aplicacao.style.display = "none";
+    localizarErro.style.display = "block";
+}
+
+fecharModal.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
     }
 }
 
@@ -61,12 +108,12 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         .then((userCredential) => {
             // Login bem-sucedido
             user = userCredential;
-            liberarEntrada();
-            //window.location.href = 'index.html'; // Redireciona para a página de cadastro de alunos
+            setCookie('uid',user.user.uid);
+            location.reload();
         })
         .catch((error) => {
-            console.error('Erro ao fazer login: ', error.message);
-            alert('Falha ao entrar: ' + error.message);
+            modal.style.display = "block";
+            modalTexto.innerHTML = 'Erro ao fazer login:<br>E-mail/Senha inválidos.';
         });
 });
 document.getElementById('cadastroForm').addEventListener('submit', function (event) {
@@ -86,32 +133,8 @@ document.getElementById('cadastroForm').addEventListener('submit', function (eve
         });
 });
 
-//função para mudar para a tela de cadastro
-function mudarCadastro() {
-    login.style.display = "none";
-    cadastro.style.display = "flex";
-}
-
-//função para mudar para a tela de login
-function mudarLogin() {
-    login.style.display = "flex";
-    cadastro.style.display = "none";
-    localizarErro.style.display = "none";
-}
-
-//função para liberar a entrada
-function liberarEntrada() {
-    login.style.display = "none";
-    cadastro.style.display = "none";
-    aplicacao.style.display = "block";
-}
-
-//função para bloquear a aplicação caso a localização não esteja habilitada.
-function localErro() {
-    login.style.display = "none";
-    cadastro.style.display = "none";
-    aplicacao.style.display = "none";
-    localizarErro.style.display = "block";
+if (getCookie('uid')!=''){
+    liberarEntrada();
 }
 
 localizarUsuario();

@@ -1,9 +1,12 @@
 /* Configuração geral do corpo da página */
 body {
-    font-family: 'Arial', sans-serif; /* Fonte clara e legível */
-    background-color: #dbdbdb; /* Cor de fundo suave */
+    font-family: 'Arial', sans-serif;
+    /* Fonte clara e legível */
+    background-color: #dbdbdb;
+    /* Cor de fundo suave */
     margin: 0;
-    color: #333; /* Cor de texto que oferece bom contraste */
+    color: #333;
+    /* Cor de texto que oferece bom contraste */
 }
 
 .form {
@@ -52,10 +55,86 @@ body {
     text-decoration: underline;
 }
 
+.menu-colapsavel {
+    width: 50%;
+    text-align: center;
+    background-color: #007bff;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    color: white;
+    transition: 0.2s ease-out;
+}
+
+.menu-colapsavel:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}
+
+.flexbox {
+    display: flex;
+    justify-content: center;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+    text-align: center;
+    /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.fecharModal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.fecharModal:hover,
+.fecharModal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 #localErro h2 {
     font-size: larger;
     color: black;
 }
+
+#mainFrame {
+    margin-top: 0;
+    display: none;
+}
+
 
 #localErro p {
     font-size: medium;
@@ -68,8 +147,10 @@ body {
     border: none;
     padding: 10px 15px;
     border-radius: 4px;
-    cursor: pointer; /* Indicador visual de que é clicável */
-    transition: background-color 0.3s; /* Transição suave para feedback visual */
+    cursor: pointer;
+    /* Indicador visual de que é clicável */
+    transition: background-color 0.3s;
+    /* Transição suave para feedback visual */
 }
 
 #localErro a:hover {
@@ -91,23 +172,30 @@ body {
 /* Cabeçalhos principais */
 h1 {
     font-size: 24px;
-    color: #007bff; /* Cor que destaca a importância do cabeçalho */
+    color: #007bff;
+    /* Cor que destaca a importância do cabeçalho */
 }
 
 /* Formulários */
 form {
-    background-color: #ffffff; /* Fundo claro para áreas interativas */
+    background-color: #ffffff;
+    /* Fundo claro para áreas interativas */
     padding: 20px;
-    border-radius: 8px; /* Bordas arredondadas para um design amigável */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Sombra sutil para elevação */
-    margin-bottom: 20px; /* Espaçamento entre elementos de formulário */
+    border-radius: 8px;
+    /* Bordas arredondadas para um design amigável */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil para elevação */
+    margin-bottom: 20px;
+    /* Espaçamento entre elementos de formulário */
 }
 
 /* Labels são claros e diretos */
 label {
     display: block;
-    margin-bottom: 8px; /* Espaço abaixo do label para clareza */
-    font-weight: bold; /* Destaque para o texto do label */
+    margin-bottom: 8px;
+    /* Espaço abaixo do label para clareza */
+    font-weight: bold;
+    /* Destaque para o texto do label */
 }
 
 /* Inputs padrão e seletores */
@@ -117,56 +205,71 @@ input[type="tel"],
 input[type="file"],
 input[type="password"],
 select {
-    padding: 10px; /* Padding para facilidade de entrada de dados */
-    margin-bottom: 20px; /* Espaço entre campos para evitar erros */
-    border: 1px solid #ccc; /* Borda sutil para definir áreas clicáveis */
-    border-radius: 4px; /* Consistência com bordas arredondadas */
+    padding: 10px;
+    /* Padding para facilidade de entrada de dados */
+    margin-bottom: 20px;
+    /* Espaço entre campos para evitar erros */
+    border: 1px solid #ccc;
+    /* Borda sutil para definir áreas clicáveis */
+    border-radius: 4px;
+    /* Consistência com bordas arredondadas */
 }
 
 /* Botões com interatividade clara */
 button {
-    background-color: #007bff; /* Cor chamativa para ações principais */
+    background-color: #007bff;
+    /* Cor chamativa para ações principais */
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 4px;
-    cursor: pointer; /* Indicador visual de que é clicável */
-    transition: background-color 0.3s; /* Transição suave para feedback visual */
+    cursor: pointer;
+    /* Indicador visual de que é clicável */
+    transition: background-color 0.3s;
+    /* Transição suave para feedback visual */
 }
 
 button:hover {
-    background-color: #0056b3; /* Mudança de cor ao passar o mouse para feedback */
+    background-color: #0056b3;
+    /* Mudança de cor ao passar o mouse para feedback */
 }
 
 /* Estilos adicionais para feedback visual de ações */
 button:active {
-    transform: translateY(1px); /* Efeito de clique sutil */
+    transform: translateY(1px);
+    /* Efeito de clique sutil */
 }
 
 /* Limpar o estilo do navegador padrão para imagens em listas */
 ul {
-    list-style-type: none; /* Remover marcadores de lista */
-    padding-left: 0; /* Ajustar alinhamento */
+    list-style-type: none;
+    /* Remover marcadores de lista */
+    padding-left: 0;
+    /* Ajustar alinhamento */
 }
 
 li {
-    margin-bottom: 10px; /* Espaçamento entre itens da lista */
+    margin-bottom: 10px;
+    /* Espaçamento entre itens da lista */
     padding: 10px;
-    background-color: #e9ecef; /* Diferenciação sutil de itens */
+    background-color: #e9ecef;
+    /* Diferenciação sutil de itens */
     border-radius: 4px;
 }
 
 /* Imagens dentro de itens da lista */
 img {
-    max-width: 100px; /* Limitação do tamanho da imagem para uniformidade */
+    max-width: 100px;
+    /* Limitação do tamanho da imagem para uniformidade */
     height: auto;
-    display: block; /* Correção de alinhamento */
+    display: block;
+    /* Correção de alinhamento */
 }
 
 /* Media Queries */
 @media (max-width: 600px) {
     body {
-        margin: 10px;
+        margin: 5px;
         font-size: 14px;
     }
 
@@ -181,6 +284,26 @@ img {
     button {
         padding: 8px 10px;
     }
+
+    .flexbox {
+        flex-wrap: wrap;
+    }
+    .menu-colapsavel {
+        width: 99%;
+        
+        margin: 1%;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 40% auto;
+        /* 15% from the top and centered */
+        padding: 10px;
+        border: 1px solid #888;
+        width: 90%;
+        text-align: center;
+        /* Could be more or less, depending on screen size */
+    }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
@@ -191,6 +314,16 @@ img {
 
     h1 {
         font-size: 22px;
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 30% auto;
+        /* 15% from the top and centered */
+        padding: 10px;
+        border: 1px solid #888;
+        width: 80%;
+        text-align: center;
+        /* Could be more or less, depending on screen size */
     }
 }
 
@@ -203,4 +336,15 @@ img {
     h1 {
         font-size: 24px;
     }
+    .modal-content {
+        background-color: #fefefe;
+        margin: 20% auto;
+        /* 15% from the top and centered */
+        padding: 10px;
+        border: 1px solid #888;
+        
+        text-align: center;
+        /* Could be more or less, depending on screen size */
+    }
+    
 }
