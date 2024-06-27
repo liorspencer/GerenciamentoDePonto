@@ -69,6 +69,12 @@ function checarLocal() {
     }
 }
 
+function encerrarSessao(){
+    setCookie('uid','');
+    user = null;
+    location.reload();
+}
+
 //função para mudar para a tela de cadastro
 function mudarCadastro() {
     login.style.display = "none";

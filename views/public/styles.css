@@ -40,6 +40,10 @@ body {
     font-size: small;
 }
 
+.right-align {
+    text-align: right;
+}
+
 .link-inline {
     color: #007bff;
     text-decoration: underline;
@@ -53,6 +57,13 @@ body {
 
 .menu a:hover {
     text-decoration: underline;
+}
+
+.menu-app-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .menu-app {
