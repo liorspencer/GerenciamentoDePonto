@@ -37,8 +37,24 @@
     <div id="mainFrame" class="box">
         <h2>Ponto WEB</h2>
         <div class="flexbox">
-            <div class="menu-colapsavel">Marcar ponto</div>
-            <div class="menu-colapsavel">Visualizar marcações</div>
+            <a id="marcar" class="menu-app">Marcar ponto</a>
+            <a id="visualizar" class="menu-app">Visualizar marcações</a>
+        </div>
+        <div id="marcarContent" class="menu-content">
+            <h3>Marcação de Ponto</h3>
+            <label>Data atual</label>
+            <span id="hora"></span><br>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome"><br>
+            <label for="imagem">Insira sua foto:</label>
+            <input type="file" id="imagem" name="imagem">
+            <label>Sua localização será gravada no ponto.</label><br>
+            <button type="button" onclick="enviarDadosParaFirebase()">Marcar Ponto</button>
+        </div>
+        <div id="visualizarContent" class="menu-content">
+            <h3>Visualizar Pontos</h3>
+            <button type="button" onclick="consultarAlunoPorNome()">Consultar</button>
+            <ul id="listaPontos"></ul>
         </div>
     </div>
     <!-- The Modal -->
@@ -64,6 +80,8 @@
     </div>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
     <script src="app.js"></script>
     <script src="login.js"></script>

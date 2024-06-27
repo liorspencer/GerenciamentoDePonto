@@ -15,11 +15,14 @@ const database = firebase.database(); // Inicialize o banco de dados
 const storage = firebase.storage(); // Inicialize o storage
 const loginBotao = document.getElementById('checarLogin');
 
+
 // Função para enviar dados para o Firebase
 function enviarDadosParaFirebase() {
-    const nomeAluno = document.getElementById('nome').value;
-    const turma = document.getElementById('turma').value;
-    const curso = document.getElementById('curso').value;
+    const uid = user.uid;
+    const data = dataAtual();
+    const nome = document.getElementById('nome').value;
+    const latitude = user.lat;
+    const longitude = user.lon;
     const imagem = document.getElementById('imagem').files[0]; // Obtém o arquivo de imagem
 
     if (imagem) {
@@ -27,18 +30,17 @@ function enviarDadosParaFirebase() {
         storageRef.put(imagem).then(snapshot => {
             snapshot.ref.getDownloadURL().then(downloadURL => {
                 const dados = {
-                    nomeAluno: nomeAluno,
-                    turma: turma,
-                    curso: curso,
+                    uid: uid,
+                    data: data,
+                    nome: nome,
+                    latitude: latitude,
+                    longitude: longitude,
                     imagemURL: downloadURL // Salva a URL da imagem
                 };
-
-                database.ref('alunos').push(dados)
+                database.ref('pontos').push(dados)
                     .then(() => {
                         alert('Dados enviados com sucesso!');
                         document.getElementById('nome').value = '';
-                        document.getElementById('turma').value = '';
-                        document.getElementById('curso').value = '';
                         document.getElementById('imagem').value = '';
                     })
                     .catch(error => {
@@ -55,34 +57,68 @@ function enviarDadosParaFirebase() {
 
 // Função para consultar dados dos alunos
 function consultarAlunoPorNome() {
-    const nomeBusca = document.getElementById('nomeConsulta').value.trim().toLowerCase(); // Convertendo para minúsculas para busca case insensitive
-    const alunosRef = database.ref('alunos');
-    alunosRef.once('value', snapshot => {
-        const lista = document.getElementById('listaAlunos');
+    //const nomeBusca = document.getElementById('nomeConsulta').value.trim().toLowerCase(); // Convertendo para minúsculas para busca case insensitive
+    const pontosRef = database.ref('pontos');
+    pontosRef.once('value', snapshot => {
+        const lista = document.getElementById('listaPontos');
         lista.innerHTML = ''; // Limpar lista anterior
         let encontrado = false;
 
         snapshot.forEach(childSnapshot => {
-            const aluno = childSnapshot.val();
+            const ponto = childSnapshot.val();
             // Verifica se o nome do aluno inclui o texto buscado
-            if (aluno.nomeAluno.toLowerCase().includes(nomeBusca)) {
+            if (ponto.uid.includes(user.uid)) {
                 encontrado = true;
                 const item = document.createElement('li');
-                item.innerHTML = `Nome: ${aluno.nomeAluno}, Turma: ${aluno.turma}, Curso: ${aluno.curso}, Imagem: <img src="${aluno.imagemURL}" alt="Imagem do Aluno" style="width:100px; height:auto;">`;
+                item.innerHTML = `Data: ${ponto.data}, Nome: ${ponto.nome}, Localização: Latitude ${ponto.latitude} Longitude ${ponto.longitude}, Imagem: <img src="${ponto.imagemURL}" alt="Imagem do Aluno" style="width:100px; height:auto;">`;
                 lista.appendChild(item);
             }
         });
 
         if (!encontrado) {
-            lista.innerHTML = '<li>Nenhum aluno encontrado com esse nome.</li>';
+            lista.innerHTML = '<li>Nenhum ponto marcado nesse usuário.</li>';
         }
     }).catch(error => {
-        console.error('Erro ao buscar alunos: ', error);
+        console.error('Erro ao buscar pontos: ', error);
     });
 }
 
-function consultarLogin() {
-    console.log(getCookie(''))
-}
+function dataAtual() {
+    horaAtual = new Date();
+    let horas;
+    let minutos;
+    let segundos;
+    let dia;
+    let mes;
+    if (horaAtual.getHours()<10){
+        horas = `0${horaAtual.getHours()}`;
+    }else{
+        horas = horaAtual.getHours();
+    }
+    
+    if (horaAtual.getMinutes()<10){
+        minutos = `0${horaAtual.getMinutes()}`;
+    }else{
+        minutos = horaAtual.getMinutes();
+    }
 
-loginBotao.onclick = consultarLogin();
+    if (horaAtual.getSeconds()<10){
+        segundos = `0${horaAtual.getSeconds()}`;
+    }else{
+        segundos = horaAtual.getSeconds();
+    }
+
+    if (horaAtual.getDate()<10){
+        dia = `0${horaAtual.getDate()}`;
+    } else{
+        dia = horaAtual.getDate();
+    }
+
+    if ((horaAtual.getMonth()+1)<10){
+        mes = `0${horaAtual.getMonth()+1}`;
+    } else{
+        mes = horaAtual.getMonth()+1;
+    }
+
+    return dia+"/"+mes+"/"+horaAtual.getFullYear()+" - "+horas+ ":" +minutos+ ":" +segundos;
+}

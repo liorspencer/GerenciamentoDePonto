@@ -4,8 +4,15 @@ const aplicacao = document.getElementById('mainFrame');
 const localizarErro = document.getElementById('localErro');
 const loginFrame = document.getElementById('loginFrame');
 const modal = document.getElementById('modalErro');
-const modalTexto = document.getElementById('modalTexto')
+const modalTexto = document.getElementById('modalTexto');
 const fecharModal = document.getElementsByClassName("fecharModal")[0];
+const botaoMarcar = document.getElementById('marcar');
+const marcarContent = document.getElementById('marcarContent');
+const botaoVisualizar = document.getElementById('visualizar');
+const visualizarContent = document.getElementById('visualizarContent');
+let intervalo = setInterval(atualizarHora, 500);;
+let visualizarAberto = false;
+let marcarAberto = false;
 let user = Object;
 
 //função para definir cookies.
@@ -65,12 +72,14 @@ function checarLocal() {
 //função para mudar para a tela de cadastro
 function mudarCadastro() {
     login.style.display = "none";
+    loginFrame.style.display = "block";
     cadastro.style.display = "flex";
 }
 
 //função para mudar para a tela de login
 function mudarLogin() {
     login.style.display = "flex";
+    loginFrame.style.display = "block";
     cadastro.style.display = "none";
     localizarErro.style.display = "none";
 }
@@ -86,7 +95,33 @@ function localErro() {
     login.style.display = "none";
     cadastro.style.display = "none";
     aplicacao.style.display = "none";
+    loginFrame.style.display = "none";
     localizarErro.style.display = "block";
+}
+
+function atualizarHora() {
+    horaAtual = new Date();
+    let horas;
+    let minutos;
+    let segundos;
+    if (horaAtual.getHours()<10){
+        horas = `0${horaAtual.getHours()}`;
+    }else{
+        horas = horaAtual.getHours();
+    }
+    
+    if (horaAtual.getMinutes()<10){
+        minutos = `0${horaAtual.getMinutes()}`;
+    }else{
+        minutos = horaAtual.getMinutes();
+    }
+
+    if (horaAtual.getSeconds()<10){
+        segundos = `0${horaAtual.getSeconds()}`;
+    }else{
+        segundos = horaAtual.getSeconds();
+    }
+    document.getElementById('hora').innerHTML = horas + ":" + minutos + ":" + segundos;
 }
 
 fecharModal.onclick = function() {
@@ -96,6 +131,35 @@ fecharModal.onclick = function() {
 window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
+    }
+}
+
+botaoMarcar.onclick = function () {
+    if (!marcarAberto){
+        marcarAberto=true;
+        botaoVisualizar.style.display = "none";
+        botaoMarcar.innerHTML = "Voltar ao menu principal";
+        marcarContent.style.display = "flex";
+        
+    } else {
+        marcarAberto=false;
+        botaoVisualizar.style.display = "block";
+        botaoMarcar.innerHTML = "Marcar ponto";
+        marcarContent.style.display = "none";
+    }
+}
+
+botaoVisualizar.onclick = function () {
+    if (!visualizarAberto){
+        visualizarAberto=true;
+        botaoMarcar.style.display = "none";
+        botaoVisualizar.innerHTML = "Voltar ao menu principal";
+        visualizarContent.style.display = "flex";
+    } else {
+        visualizarAberto=false;
+        botaoMarcar.style.display = "block";
+        botaoVisualizar.innerHTML = "Visualizar marcações";
+        visualizarContent.style.display = "none";
     }
 }
 
@@ -116,6 +180,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
             modalTexto.innerHTML = 'Erro ao fazer login:<br>E-mail/Senha inválidos.';
         });
 });
+
 document.getElementById('cadastroForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const email = document.getElementById('emailCadastro').value;
@@ -135,6 +200,7 @@ document.getElementById('cadastroForm').addEventListener('submit', function (eve
 
 if (getCookie('uid')!=''){
     liberarEntrada();
+    user.uid = getCookie('uid');
 }
 
 localizarUsuario();
