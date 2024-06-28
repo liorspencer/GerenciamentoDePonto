@@ -22,7 +22,7 @@ function enviarDadosParaFirebase() {
     const latitude = user.lat;
     const longitude = user.lon;
     let imagem = 0;
-    if(document.getElementById('imagem').files[0].type.match('image.*')){
+    if (document.getElementById('imagem').files[0].type.match('image.*')) {
         imagem = document.getElementById('imagem').files[0];// Obtém o arquivo de imagem
     }
     if (!imagem == 0) {
@@ -57,6 +57,15 @@ function enviarDadosParaFirebase() {
 
 // Função para consultar dados dos pontos
 function consultarPontos() {
+    let adminEncontrado = false;
+    const adminRef = database.ref('admin');
+    adminRef.once('value', snapshot => {
+        snapshot.forEach(childSnapshot => {
+            if (user.uid == childSnapshot.val()) {
+                adminEncontrado = true
+            }
+        })
+    });
     const pontosRef = database.ref('pontos');
     pontosRef.once('value', snapshot => {
         const lista = document.getElementById('listaPontos');
@@ -69,11 +78,18 @@ function consultarPontos() {
         snapshot.forEach(childSnapshot => {
             const ponto = childSnapshot.val();
             // Verifica se o nome do aluno inclui o texto buscado
-            if (ponto.uid.includes(user.uid)) {
+            if (adminEncontrado) {
                 encontrado = true;
                 const item = document.createElement('tr');
-                item.innerHTML = `<td class="tablePonto">${ponto.data}</td><td class="tablePonto">${ponto.nome}</td><td class="tablePonto"><img src="img/location.png" class="acoes" onclick="visualizarLocalizacao(${ponto.latitude},${ponto.longitude})" alt="Visualizar Localização" title="Visualizar Localização"><img src="img/photo.png" class="acoes" onclick="visualizarImagem('${ponto.imagemURL}')" alt="Visualizar Imagem" title="Visualizar Imagem"></td>`;
+                item.innerHTML = `<td class="tablePonto">${ponto.data}</td><td class="tablePonto">${ponto.nome}</td><td class="tablePonto"><img src="img/location.png" class="acoes" onclick="visualizarLocalizacao(${ponto.latitude},${ponto.longitude})" alt="Visualizar Localização" title="Visualizar Localização"><img src="img/photo.png" class="acoes" onclick="visualizarImagem('${ponto.imagemURL}')" alt="Visualizar Imagem" title="Visualizar Imagem"><img src="img/apagar.png" class="acoes" onclick="apagarEntrada('${childSnapshot.key}')" alt="Apagar Entrada" title="Apagar Entrada"></td>`;
                 lista.appendChild(item);
+            } else {
+                if (ponto.uid.includes(user.uid)) {
+                    encontrado = true;
+                    const item = document.createElement('tr');
+                    item.innerHTML = `<td class="tablePonto">${ponto.data}</td><td class="tablePonto">${ponto.nome}</td><td class="tablePonto"><img src="img/location.png" class="acoes" onclick="visualizarLocalizacao(${ponto.latitude},${ponto.longitude})" alt="Visualizar Localização" title="Visualizar Localização"><img src="img/photo.png" class="acoes" onclick="visualizarImagem('${ponto.imagemURL}')" alt="Visualizar Imagem" title="Visualizar Imagem"></td>`;
+                    lista.appendChild(item);
+                }
             }
         });
 
@@ -83,6 +99,21 @@ function consultarPontos() {
     }).catch(error => {
         console.error('Erro ao buscar pontos: ', error);
     });
+}
+
+// Função para apagar entrada
+function apagarEntrada(key){
+    let refference = database.ref('pontos');
+    refference.once('value', snapshot =>{
+        snapshot.forEach(childSnapshot => {
+            if(childSnapshot.key == key){
+                childSnapshot.getRef().remove();
+                alert("Entrada apagada.");
+            }
+        })
+    });
+    setTimeout(consultarPontos,1000);
+    
 }
 
 // Função para limpar a consulta
