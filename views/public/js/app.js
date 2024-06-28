@@ -21,9 +21,11 @@ function enviarDadosParaFirebase() {
     const nome = document.getElementById('nome').value;
     const latitude = user.lat;
     const longitude = user.lon;
-    const imagem = document.getElementById('imagem').files[0]; // Obtém o arquivo de imagem
-
-    if (imagem) {
+    let imagem = 0;
+    if(document.getElementById('imagem').files[0].type.match('image.*')){
+        imagem = document.getElementById('imagem').files[0];// Obtém o arquivo de imagem
+    }
+    if (!imagem == 0) {
         const storageRef = storage.ref('imagens/' + imagem.name);
         storageRef.put(imagem).then(snapshot => {
             snapshot.ref.getDownloadURL().then(downloadURL => {
