@@ -3,17 +3,25 @@ const cadastro = document.getElementById('cadastroForm');
 const aplicacao = document.getElementById('mainFrame');
 const localizarErro = document.getElementById('localErro');
 const loginFrame = document.getElementById('loginFrame');
-const modal = document.getElementById('modalErro');
+const modal = document.getElementById('modal');
 const modalTexto = document.getElementById('modalTexto');
+const modalImagem = document.getElementById('modalImagem');
 const fecharModal = document.getElementsByClassName("fecharModal")[0];
 const botaoMarcar = document.getElementById('marcar');
 const marcarContent = document.getElementById('marcarContent');
 const botaoVisualizar = document.getElementById('visualizar');
 const visualizarContent = document.getElementById('visualizarContent');
+const mapController = document.getElementById('map');
 let intervalo = setInterval(atualizarHora, 500);;
 let visualizarAberto = false;
 let marcarAberto = false;
 let user = Object;
+let map = L.map('map');
+let marker;
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
 
 //função para definir cookies.
 function setCookie(cname, cvalue) {
@@ -40,11 +48,11 @@ function getCookie(cname) {
 //função utilizada para receber a geolocalização;
 function localizarUsuario() {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(guardarLocalizacao);
+        navigator.geolocation.getCurrentPosition(guardarLocalizacao);
     } else {
-      localErro();
-      document.getElementById('erroDescricao').innerHTML = "Infelizmente seu dispositivo ou navegador não suporta geolocalização.";
-      document.getElementById('erroBotao').style.display = "none";
+        localErro();
+        document.getElementById('erroDescricao').innerHTML = "Infelizmente seu dispositivo ou navegador não suporta geolocalização.";
+        document.getElementById('erroBotao').style.display = "none";
     }
 }
 
@@ -55,22 +63,22 @@ function guardarLocalizacao(pos) {
 }
 
 function checarLocal() {
-    if(typeof user.lat == 'undefined'){
+    if (typeof user.lat == 'undefined') {
         localErro();
-        
+
     } else {
-        if(getCookie('uid')!=''){
+        if (getCookie('uid') != '') {
             mudarLogin();
             liberarEntrada();
-        }else{
+        } else {
             mudarLogin();
         }
-        
+
     }
 }
 
-function encerrarSessao(){
-    setCookie('uid','');
+function encerrarSessao() {
+    setCookie('uid', '');
     user = null;
     location.reload();
 }
@@ -105,50 +113,100 @@ function localErro() {
     localizarErro.style.display = "block";
 }
 
+function visualizarLocalizacao(latitude, longitude) {
+    modal.style.display = "block";
+    modalTexto.innerHTML = `Latitude: ${latitude}; Longitude: ${longitude}`;
+    mapController.style.display = "block";
+    map.setView([latitude, longitude], 16);
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`)
+        .then((response) => response.json())
+        .then((json) => {
+            marker = new L.marker([latitude, longitude]);
+            map.addLayer(marker);
+            marker.bindPopup(`${json.address.road}, ${json.address.city}, ${json.address.state}, ${json.address.postcode}`).openPopup();
+            console.log(json.address);
+
+        });
+}
+
+function visualizarImagem(src) {
+    modal.style.display = "block";
+    modalTexto.innerHTML = ``;
+    modalImagem.src = src;
+    modalImagem.style.display = "inline-block";
+    modalImagem.style.height = "400px";
+    modalImagem.style.width = "400px";
+}
+
 function atualizarHora() {
     horaAtual = new Date();
     let horas;
     let minutos;
     let segundos;
-    if (horaAtual.getHours()<10){
+    let dia;
+    let mes;
+    if (horaAtual.getHours() < 10) {
         horas = `0${horaAtual.getHours()}`;
-    }else{
+    } else {
         horas = horaAtual.getHours();
     }
-    
-    if (horaAtual.getMinutes()<10){
+
+    if (horaAtual.getMinutes() < 10) {
         minutos = `0${horaAtual.getMinutes()}`;
-    }else{
+    } else {
         minutos = horaAtual.getMinutes();
     }
 
-    if (horaAtual.getSeconds()<10){
+    if (horaAtual.getSeconds() < 10) {
         segundos = `0${horaAtual.getSeconds()}`;
-    }else{
+    } else {
         segundos = horaAtual.getSeconds();
     }
-    document.getElementById('hora').innerHTML = horas + ":" + minutos + ":" + segundos;
+
+    if (horaAtual.getDate() < 10) {
+        dia = `0${horaAtual.getDate()}`;
+    } else {
+        dia = horaAtual.getDate();
+    }
+
+    if ((horaAtual.getMonth() + 1) < 10) {
+        mes = `0${horaAtual.getMonth() + 1}`;
+    } else {
+        mes = horaAtual.getMonth() + 1;
+    }
+    document.getElementById('hora').innerHTML = dia + "/" + mes + "/" + horaAtual.getFullYear() + " - " + horas + ":" + minutos + ":" + segundos;
 }
 
-fecharModal.onclick = function() {
+fecharModal.onclick = function () {
     modal.style.display = "none";
+    mapController.style.display = "none";
+    modalImagem.style.display = "none";
+    try {
+        map.removeLayer(marker)
+    } catch (error) {}
+
 }
 
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal) {
-      modal.style.display = "none";
+        modal.style.display = "none";
+        mapController.style.display = "none";
+        modalImagem.style.display = "none";
+        try {
+            map.removeLayer(marker)
+        } catch (error) {}
     }
 }
 
 botaoMarcar.onclick = function () {
-    if (!marcarAberto){
-        marcarAberto=true;
+    if (!marcarAberto) {
+        marcarAberto = true;
         botaoVisualizar.style.display = "none";
         botaoMarcar.innerHTML = "Voltar ao menu principal";
         marcarContent.style.display = "flex";
-        
+
     } else {
-        marcarAberto=false;
+        marcarAberto = false;
         botaoVisualizar.style.display = "block";
         botaoMarcar.innerHTML = "Marcar ponto";
         marcarContent.style.display = "none";
@@ -156,13 +214,13 @@ botaoMarcar.onclick = function () {
 }
 
 botaoVisualizar.onclick = function () {
-    if (!visualizarAberto){
-        visualizarAberto=true;
+    if (!visualizarAberto) {
+        visualizarAberto = true;
         botaoMarcar.style.display = "none";
         botaoVisualizar.innerHTML = "Voltar ao menu principal";
         visualizarContent.style.display = "flex";
     } else {
-        visualizarAberto=false;
+        visualizarAberto = false;
         botaoMarcar.style.display = "block";
         botaoVisualizar.innerHTML = "Visualizar marcações";
         visualizarContent.style.display = "none";
@@ -178,7 +236,7 @@ document.getElementById('loginForm').addEventListener('submit', function (event)
         .then((userCredential) => {
             // Login bem-sucedido
             user = userCredential;
-            setCookie('uid',user.user.uid);
+            setCookie('uid', user.user.uid);
             location.reload();
         })
         .catch((error) => {
@@ -196,7 +254,7 @@ document.getElementById('cadastroForm').addEventListener('submit', function (eve
         .then((userCredential) => {
             // Login bem-sucedido
             console.log('userCredential')
-            
+
         })
         .catch((error) => {
             console.error('Erro ao fazer cadastro: ', error.message);
@@ -204,10 +262,10 @@ document.getElementById('cadastroForm').addEventListener('submit', function (eve
         });
 });
 
-if (getCookie('uid')!=''){
+if (getCookie('uid') != '') {
     liberarEntrada();
     user.uid = getCookie('uid');
 }
 
 localizarUsuario();
-setTimeout(checarLocal,100);
+setTimeout(checarLocal, 100);

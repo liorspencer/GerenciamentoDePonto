@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 </head>
 
 <body>
+    <!-- Formulário de Cadastro/Login -->
     <div id="loginFrame" class="box">
         <div class="sub-box">
             <form class="form" id="loginForm">
@@ -56,20 +58,24 @@
         </div>
         <div id="visualizarContent" class="menu-content">
             <h3>Visualizar Pontos</h3>
-            <button type="button" onclick="consultarAlunoPorNome()">Consultar</button>
-            <ul id="listaPontos"></ul>
+            <div>
+            <button type="button" onclick="consultarPontos()">Consultar</button>
+            <button type="button" onclick="limparConsulta()">Limpar</button>
+            </div>
+            <table class="tablePonto" id="listaPontos"></table>
         </div>
     </div>
     <!-- The Modal -->
-    <div id="modalErro" class="modal">
-
+    <div id="modal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <span class="fecharModal">&times;</span>
             <p id="modalTexto"></p>
+            <img id="modalImagem" src="" alt="">
+            <div id="map"></div>
         </div>
-
     </div>
+    <!-- Caixa de localização -->
     <div class="box">
         <div class="sub-box">
             <div id="localErro">
@@ -86,8 +92,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
-    <script src="app.js"></script>
-    <script src="login.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="js/app.js"></script>
+    <script src="js/login.js"></script>
 </body>
 
 </html>
